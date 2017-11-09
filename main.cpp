@@ -27,7 +27,7 @@ void HAPI_Main()
 	int X{ 0 };
 	int Y{ 0 };
 	int bY{ 0 };
-	int bX{ 0 };
+	int bX{ 500 };
 	int blit{ 0 };
 	int row{0};
 	// User prompt to deicde on blit function used
@@ -73,10 +73,10 @@ void HAPI_Main()
 	if (!vis.Create_Animated("Data\\trump_run.png", "trump", 600, 400, 100, 100, 6,0)) {
 		return;
 	}
-	//if (!vis.Create_Animated("Data\\MeatSmall.png", "food", 128, 160, 32, 32, 4, 1)) {
-	//	HAPI.UserMessage("NO FRUUT N VEJ", "Error");
-	//	return;
-	//}
+	if (!vis.Create_Animated("Data\\MeatSmall.png", "food", 128, 160, 32, 32, 4, 1)) {
+		HAPI.UserMessage("NO FRUUT N VEJ", "Error");
+		return;
+	}
 
 	while (HAPI.Update())
 	{
@@ -139,10 +139,10 @@ void HAPI_Main()
 			HAPI.UserMessage("trump failed to draw", "error");
 		}
 		vis.Draw_Sprite("trump", bX, bY, blit);
-		//if (!vis.Draw_Sprite("food", 300, 300, blit))
-		//{
-		//	HAPI.UserMessage("food failed to draw", "error");
-		//}
+		if (!vis.Draw_Sprite("food", 300, 300, blit))
+		{
+			HAPI.UserMessage("food failed to draw", "error");
+		}
 	}
 }
 
