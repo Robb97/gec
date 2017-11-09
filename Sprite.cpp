@@ -2,11 +2,14 @@
 #include "Rectangle.h"
 
 
-Sprite::Sprite(int textureWidth, int textureHeight, std::string path) :
-	txtWidth(textureWidth), txtHeight(textureHeight), txtPath(path), txtPntr(nullptr)
+Sprite::Sprite(int textureWidth, int textureHeight, std::string path) : txtWidth(textureWidth), txtHeight(textureHeight),
+txtPath(path), txtPntr(nullptr), frameRect(textureWidth, textureHeight), numFrames(0), fNum(0), rowNum(0)
 {
-
+	
 }
+
+Sprite::Sprite(int textureWidth, int textureHeight, std::string path, int frameWidth, int frameHeight, int numOfFrames, int animRow) :txtWidth(textureWidth), txtHeight(textureHeight), fNum(0), numFrames(numOfFrames), txtPath(path), txtPntr(nullptr), frameRect(0, frameWidth, 0, frameHeight), rowNum(animRow) {}
+
 
 Sprite::~Sprite()
 {
@@ -45,18 +48,22 @@ bool Sprite::Clip_Blit(BYTE *screenPointer, int posX, int posY, const Rectangle 
 {
 	BYTE *screenPntr{ screenPointer };
 	BYTE *texturePntr{ txtPntr };
-	Rectangle spriteRectangle(0,txtWidth,0, txtHeight);
+	Rectangle spriteRectangle(frameRect);
 	spriteRectangle.Clip_To(dest, posX, posY);
+	const int rowCoords = rowNum * spriteRectangle.Height();
+	spriteRectangle.Translate(frameRect.Width() * fNum, rowCoords);
+	std::cout << spriteRectangle.Top() << std::endl;
+
 	if (spriteRectangle.Outside(dest, posX, posY)){}
-	else 
+	else
 	{
 		int increment = (dest.Width() - spriteRectangle.Width()) * 4;
 		int start = (std::max(0, posX) + (std::max(0, posY)*dest.Width())) * 4;
-		int txtIncrement = (txtWidth - spriteRectangle.Width()) * 4;
-		int txtStart = (spriteRectangle.Left() + (spriteRectangle.Top() * txtWidth)) * 4;
+		int txtIncrement = (Get_Width() - spriteRectangle.Width()) * 4;
+		int txtStart = (spriteRectangle.Left() + (spriteRectangle.Top() * Get_Width())) * 4;
 		screenPntr += start;
 		texturePntr += txtStart;
-		for (int h{ 0 }; h < spriteRectangle.Height(); h++) 
+		for (int h{ 0 }; h < spriteRectangle.Height(); h++)
 		{
 			for (int w{ 0 }; w < spriteRectangle.Width(); w++)
 			{
@@ -80,7 +87,17 @@ bool Sprite::Clip_Blit(BYTE *screenPointer, int posX, int posY, const Rectangle 
 			texturePntr += txtIncrement;
 		}
 	}
-	return true;
+			if (fNum < numFrames) 
+			{
+				fNum++;
+				
+			}
+			else 
+			{
+				fNum = 0;
+				
+			}
+			return true;
 }
 
 bool Sprite::Alpha_Blit(BYTE *screenPointer, int screenWidth, int posX, int posY)
@@ -109,5 +126,15 @@ bool Sprite::Alpha_Blit(BYTE *screenPointer, int screenWidth, int posX, int posY
 		}
 		screenPntr += increment;
 	}
+	return true;
+}
+bool Sprite::Change_Anim(int newRow)
+{
+	if (newRow < 0 || newRow >(Get_Height() / frameRect.Height()))
+	{
+		return false;
+		
+	}
+	rowNum = newRow;
 	return true;
 }

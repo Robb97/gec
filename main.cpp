@@ -57,9 +57,7 @@ void HAPI_Main()
 		return;
 	BYTE *screen = HAPI.GetScreenPointer();
 	Visualisation vis(width, height, screen);
-	if (!vis.Create_Sprite("Data\\trump_run.png", "sprite", 100,100))
-	{
-		HAPI.UserMessage(" Sprite failed to load", "Error");
+	if (!vis.Create_Anim_Sprite("Data\\trump_run.png", "trump", 600, 400, 100, 100, 6, 3)) {
 		return;
 	}
 	if (!vis.Create_Sprite("Data\\background.tga", "background", 256, 256))
@@ -101,7 +99,7 @@ void HAPI_Main()
 		{
 			HAPI.UserMessage("background failed to draw", "error");
 		}
-		if (!vis.Draw_Sprite("sprite", X, Y,blit))
+		if (!vis.Draw_Sprite("trump", X, Y,blit))
 		{
 			HAPI.UserMessage("sprite failed to draw", "error");
 		}

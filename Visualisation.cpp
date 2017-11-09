@@ -1,4 +1,5 @@
 #include "Visualisation.h"
+#include <algorithm>
 
 
 
@@ -63,6 +64,23 @@ bool Visualisation::Draw_Sprite(const std::string &spriteName, int posX, int pos
 	}
 	return false;
 }
+bool Visualisation::Create_Anim_Sprite(const std::string &fileName, const std::string &spriteName, int width, int height, int fWidth, int fHeight, int numFrames, int animRow)
+{
+	if (spriteMap.find(spriteName) == spriteMap.end()) 
+	{
+		Sprite *s = new Sprite(width, height, fileName, fWidth, fHeight, numFrames, animRow);
+		if (!s->Init_Texture()) {
+			delete s;
+			return false;
+			
+		}
+		spriteMap[spriteName] = s;
+		std::cout << spriteMap.at(spriteName)->Get_Height();
+		return true;
+		
+	}
+	return false;
+	}
 
 
 
