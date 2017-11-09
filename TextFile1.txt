@@ -72,3 +72,42 @@ Milestone 2 <0.2.0> 26/10/2017
 	Added a large amount of sprites : heavily reduced FPS
 
 
+Milestone 3 <0.3.0> 08/11/17
+---------------------------
+	New Functions
+	-------------
+	added clip bit to sprite class,
+	added rect.h with 
+		translate to handle translating from source to screen and vice versa
+		clip to to handle clipping into a destination rectangle
+		contained to check a rectangle is within a rectangle
+		outside to check if a rectangle is outside a rectangle
+
+	Code Addition
+	-------------
+	Created a rect class to hold functions for the rectangles
+	Added Clip Blit which uses the alpha blit function with clipping inserted into it
+
+	Tests
+	------
+	Tested clipping : clips correctly
+
+Milestone 3 <0.3.1> 09/11/17
+----------------------------
+	New Functions
+	-------------
+	Added Create Animate Sprite to handle relevant info from source file which can be passed to a rectangle and later used in the blit functions
+	Added Clip Blit A(nimated) to blit using the frameRectangle which cycles through stages of animation in the source file
+
+	Code Addition
+	-------------
+	Edited existing clip blit function to now use frameRectangle instead of rectangle based on source image, as to provide a single sprite, not the whole sheet.
+	Clip bit with animation was remade into a seperate function, original clip bit re-added with frameRectangle as source
+
+	Tests
+	------
+	Tested animation across whole screen : worked
+	Added multiple sprites : heavy toll on fps
+	tested other blit functions at the same time : works
+
+

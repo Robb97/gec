@@ -59,12 +59,17 @@ bool Visualisation::Draw_Sprite(const std::string &spriteName, int posX, int pos
 
 	if (blit == 3)
 	{
+		spriteMap.at(spriteName)->Clip_Blit_A(screenStart, posX, posY, screenRectangle);
+		return true;
+	}
+	if (blit == 4)
+	{
 		spriteMap.at(spriteName)->Clip_Blit(screenStart, posX, posY, screenRectangle);
 		return true;
 	}
 	return false;
 }
-bool Visualisation::Create_Anim_Sprite(const std::string &fileName, const std::string &spriteName, int width, int height, int fWidth, int fHeight, int numFrames, int animRow)
+bool Visualisation::Create_Animated(const std::string &fileName, const std::string &spriteName, int width, int height, int fWidth, int fHeight, int numFrames, int animRow)
 {
 	if (spriteMap.find(spriteName) == spriteMap.end()) 
 	{

@@ -13,6 +13,7 @@ public:
 	int Get_Width() const { return txtWidth; }
 	bool Init_Texture();
 	bool Fast_Blit(BYTE *screenPointer, int screenWidth, int posX, int posY);
+	bool Clip_Blit_A(BYTE *screenPointer, int posX, int posY, const Rectangle &dest);
 	bool Clip_Blit(BYTE *screenPointer, int posX, int posY, const Rectangle &dest);
 	bool Alpha_Blit(BYTE *screenPointer, int screenWidth, int posX, int posY);
 	bool Change_Anim(int newRow);
@@ -22,6 +23,6 @@ private:
 	std::string txtPath;
 	BYTE *txtPntr;
 	int tWidth, tHeight, fNum, numFrames, rowNum;
-	Rectangle frameRect;
+	Rectangle frameRectangle;
 };
 

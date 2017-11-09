@@ -16,8 +16,8 @@ Additionally in the top didestory there are two batch files for creating a redis
 // Include the HAPI header to get access to all of HAPIs interfaces
 #include <HAPI_lib.h>
 #include "Visualisation.h"
-#include "main.h"
 #include<algorithm>
+#include<math.h>
 using namespace HAPISPACE;
 
 void HAPI_Main()
@@ -26,8 +26,11 @@ void HAPI_Main()
 	int height{ 600 };
 	int X{ 0 };
 	int Y{ 0 };
+	int bY{ 0 };
+	int bX{ 0 };
 	int blit{ 0 };
-// User prompt to deicde on blit function used
+	int row{0};
+	// User prompt to deicde on blit function used
 	HAPI_UserResponse responseA;
 	HAPI_UserResponse responseB;
 	HAPI.UserMessage("Do you want to use clipping?", "Clipping ?", HAPI_ButtonType::eButtonTypeYesNoCancel, &responseA);
@@ -49,7 +52,7 @@ void HAPI_Main()
 	}
 	if (responseA == HAPI_UserResponse::eUserResponseCancel)
 	{
-		return;
+		blit = 4;
 	}
 	HAPI_TKeyboardData KeyInput;
 	HAPI.SetShowFPS(true);
@@ -57,14 +60,23 @@ void HAPI_Main()
 		return;
 	BYTE *screen = HAPI.GetScreenPointer();
 	Visualisation vis(width, height, screen);
-	if (!vis.Create_Anim_Sprite("Data\\trump_run.png", "trump", 600, 400, 100, 100, 6, 3)) {
-		return;
-	}
 	if (!vis.Create_Sprite("Data\\background.tga", "background", 256, 256))
 	{
 		HAPI.UserMessage(" Background failed to load", "Error");
 		return;
 	}
+	if (!vis.Create_Sprite("Data\\alphaThing.tga", "ball", 64, 64))
+	{
+		HAPI.UserMessage(" Background failed to load", "Error");
+		return;
+	}
+	if (!vis.Create_Animated("Data\\trump_run.png", "trump", 600, 400, 100, 100, 6,0)) {
+		return;
+	}
+	//if (!vis.Create_Animated("Data\\MeatSmall.png", "food", 128, 160, 32, 32, 4, 1)) {
+	//	HAPI.UserMessage("NO FRUUT N VEJ", "Error");
+	//	return;
+	//}
 
 	while (HAPI.Update())
 	{
@@ -86,6 +98,22 @@ void HAPI_Main()
 		{
 			X++;
 		}
+		if (KeyInput.scanCode['I'])
+		{
+			bY--;
+		}
+		if (KeyInput.scanCode['J'])
+		{
+			bX--;
+		}
+		if (KeyInput.scanCode['K'])
+		{
+			bY++;
+		}
+		if (KeyInput.scanCode['L'])
+		{
+			bX++;
+		}
 		if (blit == 1 || blit == 2)
 		{
 			X = std::max(0, X);
@@ -93,16 +121,28 @@ void HAPI_Main()
 			Y = std::max(0, Y);
 			Y = std::min(height - 64, Y);
 		}
+
 		vis.Clear_To_Colour(0);
 
-		if (!vis.Draw_Sprite("background", 0, 0,blit))
+		if (!vis.Draw_Sprite("background", 0, 0,1))
 		{
 			HAPI.UserMessage("background failed to draw", "error");
 		}
+
+
+			if (!vis.Draw_Sprite("ball", 0, 0, 1))
+			{
+				HAPI.UserMessage("ball failed to draw", "error");
+			}
 		if (!vis.Draw_Sprite("trump", X, Y,blit))
 		{
-			HAPI.UserMessage("sprite failed to draw", "error");
+			HAPI.UserMessage("trump failed to draw", "error");
 		}
+		vis.Draw_Sprite("trump", bX, bY, blit);
+		//if (!vis.Draw_Sprite("food", 300, 300, blit))
+		//{
+		//	HAPI.UserMessage("food failed to draw", "error");
+		//}
 	}
 }
 
