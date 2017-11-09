@@ -1,0 +1,74 @@
+Rob Stiff S6089206
+____________________________
+
+Milestone 1 <0.1.0> 12/10/2017
+----------------------------
+	New Functions
+	-------------
+	Added Clear to colour to set screen colour.
+	Added Find Pixel function to determine 'star' location.
+	Added Speed to determine movement of starfield.
+	Stars now move towards screen to achieve desired effect.
+
+	Code Additions
+	-------------
+	Clear_To_Colour : clears screen to desired colour (in this case black) 
+		BYTE *Screen : pointer to screen
+		int width : width of screen
+		int height : height of screen
+		int r, g, b : red, green and blue values
+
+	Find_Pixel : determines placement of 'stars' and their size 
+		float width : width of star
+		float height : height of star
+		int orgWidth : original width of screen
+		int orgHeight : original height of screen
+		int posX , posY : origin of cluster of stars
+		BYTE *screenptr : pointer to screen
+
+	Tests
+	-----
+	Added large amount of stars : adding >1.000,000 stars results in performance issues at 1900x1080 res. FPS @ 1920x1080 w/ 1M stars : 49
+	Changed size of stars : star sizes of larger than 2x2 immediately effected FPS massively. FPS @ star size 10x10 : 7
+	Changed speed : speed can be changed into the multiples of 1000s without putting FPS below 30. More taxing on eyes than the program at extreme speeds.
+
+Version 0.1.1 13/10/2017
+--------------
+	New Functions
+	-------------
+	Added ability to change colour while running using keys R, B, G, P and Q (red, blue, green, purple and random).
+	Added ability to change speed of stars using W and S.
+
+	Code Additions
+	--------------
+	Edited the star struct to hold red green and blue values.
+	Made use of HAPI function GetKeyboardData.
+
+	Tests
+	-----
+	New functions worsen FPS considerably.
+
+
+Milestone 2 <0.2.0> 26/10/2017
+----------------------------
+	New Functions
+	-------------
+	Added Fast_Blit to draw a sprite to screen without alpha blending 
+	Added Alpha_Blit to draw a sprite to screen with alpha blending
+	Added Init_Texture to add texture using HAPI funciton
+	Added Create_Sprite to load a sprite from a file using HAPI function
+	Added Draw_Sprite to draw the loaded sprite(s)
+	
+	Code Addition
+	-------------
+	Created a Sprite class repsonsible for holding the blit functions
+	Created a Visualisation class responsible for clearing to colour and handling the create and draw functions
+	Used HAPIs keyboard handling to capture movement input from player
+
+	Tests
+	------
+	Tested blitting : sprites are drawn to screen
+	Tested Alpha Blitting : blends with background sprite
+	Added a large amount of sprites : heavily reduced FPS
+
+
