@@ -39,7 +39,7 @@ void Visualisation::Clear_To_Colour(int r, int g, int b)
 }
 
 
-bool Visualisation::Draw_Sprite(const std::string &spriteName, int posX, int posY,int blit) const
+bool Visualisation::Draw_Sprite(const std::string &spriteName, int posX, int posY,int blit, int frameLimiter) const
 {
 	if (spriteMap.find(spriteName) == spriteMap.end())
 	{
@@ -49,7 +49,7 @@ bool Visualisation::Draw_Sprite(const std::string &spriteName, int posX, int pos
 	if (blit == 1)
 	{
 		spriteMap.at(spriteName)->Alpha_Blit(screenStart, Width, posX, posY);
-		return true;
+		return true; 
 	}
 	if (blit == 2)
 	{
@@ -59,7 +59,7 @@ bool Visualisation::Draw_Sprite(const std::string &spriteName, int posX, int pos
 
 	if (blit == 3)
 	{
-		spriteMap.at(spriteName)->Clip_Blit_A(screenStart, posX, posY, screenRectangle);
+		spriteMap.at(spriteName)->Clip_Blit_A(screenStart, posX, posY, screenRectangle, frameLimiter);
 		return true;
 	}
 	if (blit == 4)

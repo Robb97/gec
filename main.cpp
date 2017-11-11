@@ -18,10 +18,18 @@ Additionally in the top didestory there are two batch files for creating a redis
 #include "Visualisation.h"
 #include<algorithm>
 #include<math.h>
+#include"Movement.h"
 using namespace HAPISPACE;
+
+
+
 
 void HAPI_Main()
 {
+
+	HAPI_TKeyboardData KeyInput;
+	Movement trumpMove;
+	Movement foodMove;
 	int width{ 800 };
 	int height{ 600 };
 	int X{ 0 };
@@ -30,6 +38,7 @@ void HAPI_Main()
 	int bX{ 500 };
 	int blit{ 0 };
 	int row{0};
+	
 	// User prompt to deicde on blit function used
 	HAPI_UserResponse responseA;
 	HAPI_UserResponse responseB;
@@ -54,11 +63,13 @@ void HAPI_Main()
 	{
 		blit = 4;
 	}
-	HAPI_TKeyboardData KeyInput;
-	HAPI.SetShowFPS(true);
 	if (!HAPI.Initialise(width, height, "feeling HAPI"))
 		return;
+	HAPI.SetShowFPS(true);
 	BYTE *screen = HAPI.GetScreenPointer();
+
+
+
 	Visualisation vis(width, height, screen);
 	if (!vis.Create_Sprite("Data\\background.tga", "background", 256, 256))
 	{
@@ -81,39 +92,8 @@ void HAPI_Main()
 	while (HAPI.Update())
 	{
 		KeyInput = HAPI.GetKeyboardData();
-
-		if (KeyInput.scanCode['W'])
-		{
-			Y--;
-		}
-		if (KeyInput.scanCode['A'])
-		{
-			X--;
-		}
-		if (KeyInput.scanCode['S'])
-		{
-			Y++;
-		}
-		if (KeyInput.scanCode['D'])
-		{
-			X++;
-		}
-		if (KeyInput.scanCode['I'])
-		{
-			bY--;
-		}
-		if (KeyInput.scanCode['J'])
-		{
-			bX--;
-		}
-		if (KeyInput.scanCode['K'])
-		{
-			bY++;
-		}
-		if (KeyInput.scanCode['L'])
-		{
-			bX++;
-		}
+		trumpMove.Player_Move(KeyInput);
+		foodMove.Patrol_Move(0, 300, 0, 300, 10,4);
 		if (blit == 1 || blit == 2)
 		{
 			X = std::max(0, X);
@@ -124,22 +104,20 @@ void HAPI_Main()
 
 		vis.Clear_To_Colour(0);
 
-		if (!vis.Draw_Sprite("background", 0, 0,1))
+		if (!vis.Draw_Sprite("background", 0, 0,1,0))
 		{
 			HAPI.UserMessage("background failed to draw", "error");
 		}
-
-
-			if (!vis.Draw_Sprite("ball", 0, 0, 1))
-			{
-				HAPI.UserMessage("ball failed to draw", "error");
-			}
-		if (!vis.Draw_Sprite("trump", X, Y,blit))
+		if (!vis.Draw_Sprite("ball", 0, 0, 1,0))
+		{
+			HAPI.UserMessage("ball failed to draw", "error");
+		}
+		if (!vis.Draw_Sprite("trump", trumpMove.X, trumpMove.Y,blit,250))
 		{
 			HAPI.UserMessage("trump failed to draw", "error");
 		}
-		vis.Draw_Sprite("trump", bX, bY, blit);
-		if (!vis.Draw_Sprite("food", 300, 300, blit))
+		vis.Draw_Sprite("trump", bX, bY, blit,250);
+		if (!vis.Draw_Sprite("food", foodMove.X, foodMove.Y, blit,250))
 		{
 			HAPI.UserMessage("food failed to draw", "error");
 		}

@@ -86,7 +86,7 @@ bool Sprite::Clip_Blit(BYTE *screenPointer, int posX, int posY, const Rectangle 
 	return true;
 }
 
-bool Sprite::Clip_Blit_A(BYTE *screenPointer, int posX, int posY, const Rectangle &dest)
+bool Sprite::Clip_Blit_A(BYTE *screenPointer, int posX, int posY, const Rectangle &dest,int frameLimiter)
 {
 	BYTE *screenPntr{ screenPointer };
 	BYTE *texturePntr{ txtPntr };
@@ -94,10 +94,9 @@ bool Sprite::Clip_Blit_A(BYTE *screenPointer, int posX, int posY, const Rectangl
 	spriteRectangle.Clip_To(dest, posX, posY);
 	const int rowCoords = rowNum * frameRectangle.Height();
 	spriteRectangle.Translate(frameRectangle.Width() * fNum, rowCoords);
-
 	if (frameRectangle.Outside(dest, posX, posY)){}
-	else
-	{
+
+	
 		int increment = (dest.Width() - spriteRectangle.Width()) * 4;
 		int start = (std::max(0, posX) + (std::max(0, posY)*dest.Width())) * 4;
 		int txtIncrement = (Get_Width() - spriteRectangle.Width()) * 4;
@@ -127,26 +126,28 @@ bool Sprite::Clip_Blit_A(BYTE *screenPointer, int posX, int posY, const Rectangl
 			screenPntr += increment;
 			texturePntr += txtIncrement;
 		}
-	}
-		if (fNum < numFrames)
+
+		if (counter == frameLimiter && fNum < numFrames)
 		{
 			fNum++;
-
+			counter = 0;
 		}
-
-	
-			else 
-			{
-				fNum = 0;
+		else if (counter< frameLimiter)
+		{
+			counter++;
+		}
+		else 
+		{
+			fNum = 0;
 				
-			}
+		}
 			return true;
 }
 
 bool Sprite::Alpha_Blit(BYTE *screenPointer, int screenWidth, int posX, int posY)
 {
 	BYTE *screenPntr{ screenPointer };
-	BYTE *texturePntr{ txtPntr };
+	BYTE *texturePntr{ txtPntr };	
 	int increment = (screenWidth - txtWidth) * 4;
 	int start = (posX + (posY * screenWidth)) * 4;
 	screenPntr += start;
@@ -171,7 +172,7 @@ bool Sprite::Alpha_Blit(BYTE *screenPointer, int screenWidth, int posX, int posY
 	}
 	return true;
 }
-bool Sprite::Change_Anim(int newRow)
+bool Sprite::Change_Animationation(int newRow)
 {
 	rowNum = newRow;
 	return true;

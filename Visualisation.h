@@ -15,7 +15,7 @@ public:
 		void Clear_To_Colour(int r, int g, int b);
 		bool Create_Sprite(const std::string &fileName, const std::string &spriteName, int width, int height);
 		bool Create_Animated(const std::string &fileName, const std::string &uniqueName, int width, int height, int fWidth, int fHeight, int numFrames, int animRow);
-		bool Draw_Sprite(const std::string &spriteName, int posX, int posY,int blit) const;
+		bool Draw_Sprite(const std::string &spriteName, int posX, int posY,int blit, int frameLimiter) const;
 private:
 	int Width, Height;
 	BYTE *screenStart;
