@@ -27,10 +27,32 @@ void Movement::Player_Move(HAPI_TKeyboardData KeyInput)
 		X++;
 	}
 }
+void Movement::Player_Move(HAPI_TControllerData ContInput)
+{
+	if (ContInput.isAttached) 
+	{
+		if (ContInput.digitalButtons[HK_DIGITAL_DPAD_UP])
+		{
+			Y--;
+		}
+		if (ContInput.digitalButtons[HK_DIGITAL_DPAD_LEFT])
+		{
+			X--;
+		}
+		if (ContInput.digitalButtons[HK_DIGITAL_DPAD_DOWN])
+		{
+			Y++;
+		}
+		if (ContInput.digitalButtons[HK_DIGITAL_DPAD_RIGHT])
+		{
+			X++;
+		}
+	}
+}
+
 void Movement::Patrol_Move(int sX, int fX, int sY, int fY, int speed, int patrols)
 { 
-	if (p != patrols)
-	{
+
 		if (X < fX && speedcount == speed && !xMet)
 		{
 			X++;
@@ -60,6 +82,8 @@ void Movement::Patrol_Move(int sX, int fX, int sY, int fY, int speed, int patrol
 		{
 			speedcount++;
 		}
-		p++;
-	}
 }
+
+
+
+

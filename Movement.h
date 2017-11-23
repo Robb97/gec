@@ -8,6 +8,7 @@ public:
 	~Movement();
 
 	void Player_Move(HAPI_TKeyboardData KeyInput);
+	void Movement::Player_Move(HAPI_TControllerData ContInput);
 	void Patrol_Move(int sX,int fX, int sY, int fY, int speed, int patrols);
 	int speedcount = 0;
 	bool xMet{ false };

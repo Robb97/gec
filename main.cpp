@@ -19,6 +19,7 @@ Additionally in the top didestory there are two batch files for creating a redis
 #include<algorithm>
 #include<math.h>
 #include"Movement.h"
+#include<iostream>
 using namespace HAPISPACE;
 
 
@@ -26,7 +27,8 @@ using namespace HAPISPACE;
 
 void HAPI_Main()
 {
-
+	HAPI_TControllerData data = HAPI.GetControllerData(0);
+	int value = data.analogueButtons[HK_ANALOGUE_LEFT_TRIGGER];
 	HAPI_TKeyboardData KeyInput;
 	Movement trumpMove;
 	Movement foodMove;
@@ -85,14 +87,15 @@ void HAPI_Main()
 		return;
 	}
 	if (!vis.Create_Animated("Data\\MeatSmall.png", "food", 128, 160, 32, 32, 4, 1)) {
-		HAPI.UserMessage("NO FRUUT N VEJ", "Error");
+		HAPI.UserMessage("food failed to load", "Error");
 		return;
 	}
 
 	while (HAPI.Update())
 	{
+		data = HAPI.GetControllerData(0);
 		KeyInput = HAPI.GetKeyboardData();
-		trumpMove.Player_Move(KeyInput);
+		trumpMove.Player_Move(data);
 		foodMove.Patrol_Move(0, 300, 0, 300, 10,4);
 		if (blit == 1 || blit == 2)
 		{
@@ -104,6 +107,8 @@ void HAPI_Main()
 
 		vis.Clear_To_Colour(0);
 
+
+		//drawing sprites
 		if (!vis.Draw_Sprite("background", 0, 0,1,0))
 		{
 			HAPI.UserMessage("background failed to draw", "error");
@@ -116,8 +121,8 @@ void HAPI_Main()
 		{
 			HAPI.UserMessage("trump failed to draw", "error");
 		}
-		vis.Draw_Sprite("trump", bX, bY, blit,250);
-		if (!vis.Draw_Sprite("food", foodMove.X, foodMove.Y, blit,250))
+		vis.Draw_Sprite("trump", bX, bY, blit,200);
+		if (!vis.Draw_Sprite("food", foodMove.X, foodMove.Y, blit, 2))
 		{
 			HAPI.UserMessage("food failed to draw", "error");
 		}

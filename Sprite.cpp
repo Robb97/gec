@@ -94,9 +94,7 @@ bool Sprite::Clip_Blit_A(BYTE *screenPointer, int posX, int posY, const Rectangl
 	spriteRectangle.Clip_To(dest, posX, posY);
 	const int rowCoords = rowNum * frameRectangle.Height();
 	spriteRectangle.Translate(frameRectangle.Width() * fNum, rowCoords);
-	if (frameRectangle.Outside(dest, posX, posY)){}
-
-	
+	if (frameRectangle.Outside(dest, posX, posY))  return false;
 		int increment = (dest.Width() - spriteRectangle.Width()) * 4;
 		int start = (std::max(0, posX) + (std::max(0, posY)*dest.Width())) * 4;
 		int txtIncrement = (Get_Width() - spriteRectangle.Width()) * 4;
